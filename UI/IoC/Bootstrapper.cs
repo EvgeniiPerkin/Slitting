@@ -15,6 +15,7 @@ namespace UI.IoC
             builder.RegisterType<LoadKnifes>().As<ILoader>();
             builder.RegisterType<LoadSpacers>().As<ILoader>();
 
+
             builder.RegisterAssemblyTypes(assemblies)
                 .Where(t => typeof(IServices).IsAssignableFrom(t))
                 .SingleInstance()
