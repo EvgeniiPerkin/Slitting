@@ -4,17 +4,20 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
+    <StartupObject></StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
     <Folder Include="Infrastructure\" />
     <Folder Include="Models\" />
     <Folder Include="Helpers\" />
-    <Folder Include="ViewModels\Interfaces\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="6.3.0" />
+    <PackageReference Include="MathCore.WPF" Version="0.0.30" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
 </Project>

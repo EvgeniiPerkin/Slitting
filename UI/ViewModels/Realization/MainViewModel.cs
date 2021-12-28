@@ -1,8 +1,9 @@
-﻿using UI.ViewModels.Base;
+﻿using MathCore.ViewModels;
+using UI.ViewModels.Interfaces;
 
 namespace UI.ViewModels.Realization
 {
-    public class MainViewModel : BaseViewModel
+    public class MainViewModel : ViewModel, IMainViewModel
     {
 
     }
