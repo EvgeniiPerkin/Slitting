@@ -24,8 +24,28 @@
             </StatusBarItem>
         </StatusBar>
         <TabControl>
-            <TabItem Header="Working area" />
-            <TabItem Header="Settings" />
+            <TabItem Header="Working area">
+                <ListBox
+                    ItemsSource="{Binding MyList}"
+                    Width="150"
+                    Height="200">
+                    
+                </ListBox>
+                    
+            </TabItem>
+            <TabItem Header="Settings">
+                <DockPanel>
+                    <Button
+                        DockPanel.Dock="Top"
+                        HorizontalAlignment="Left"
+                        Content="Show"
+                        Command="{Binding Command}"
+                        Width="150"
+                        Height="30"/>
+                    <DataGrid ItemsSource="{Binding Strips}"/>
+                    
+                </DockPanel>
+            </TabItem>
         </TabControl>
     </DockPanel>
 </Window>

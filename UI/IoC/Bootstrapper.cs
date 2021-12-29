@@ -24,6 +24,8 @@ namespace UI.IoC
         }
         public static void Start()
         {
+            if (_rootScope != null) return;
+
             var builder = new ContainerBuilder();
             var assemblies = new[] { Assembly.GetExecutingAssembly() };
 
@@ -35,9 +37,12 @@ namespace UI.IoC
                 .SingleInstance()
                 .AsImplementedInterfaces();
 
-            builder.RegisterAssemblyTypes(Assembly.Load(nameof(UI)))
-                .Where(t => t.Namespace.Contains("ViewModels"))
-                .As(t => t.GetInterfaces().FirstOrDefault(i => i.Name == "I" + t.Name));
+            builder.RegisterAssemblyTypes(assemblies)
+                .Where(t => typeof(IViewModel).IsAssignableFrom(t))
+                .AsImplementedInterfaces();
+            //builder.RegisterAssemblyTypes(Assembly.Load(nameof(UI)))
+            //    .Where(t => t.Namespace.Contains("ViewModels"))
+            //    .As(t => t.GetInterfaces().FirstOrDefault(i => i.Name == "I" + t.Name));
             _rootScope = builder.Build();
         }
         public static void Stop()
