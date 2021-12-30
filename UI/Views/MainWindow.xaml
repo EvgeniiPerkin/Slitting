@@ -12,9 +12,6 @@
     <DockPanel>
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem>
-                <TextBlock Text="{Binding Notify}" />
-            </StatusBarItem>
-            <StatusBarItem>
                 <ProgressBar
                     Width="100"
                     Height="15"
@@ -22,16 +19,59 @@
                     Minimum="0"
                     Value="{Binding Progress}" />
             </StatusBarItem>
+            <Separator/>
+            <StatusBarItem>
+                <TextBlock Text="{Binding Notify}" />
+            </StatusBarItem>
         </StatusBar>
         <TabControl>
             <TabItem Header="Working area">
-                <ListBox
-                    ItemsSource="{Binding MyList}"
-                    Width="150"
-                    Height="200">
-                    
-                </ListBox>
-                    
+                <DockPanel>
+                    <WrapPanel
+                        Margin="5"
+                        Width="100"
+                        DockPanel.Dock="Left"
+                        Orientation="Vertical">
+                        <TextBlock Text="Roll width"/>
+                        <TextBox
+                            Margin="0 0 0 5"
+                            Text="{Binding RollWidth}"/>
+                        <TextBlock Text="Material thickness"/>
+                        <TextBox
+                            Margin="0 0 0 5"
+                            Text="{Binding Thickness}"/>
+                        <TextBlock Text="Cutting machine"/>
+                        <StackPanel
+                            Orientation="Horizontal"
+                            Margin="0 0 0 5">
+                            <RadioButton
+                                Content="1"
+                                Margin="5"
+                                IsChecked="{Binding CuttingMachine}"/>
+                            <RadioButton
+                                Content="2"
+                                Margin="5"
+                                IsChecked="{Binding CuttingMachine}"/>
+                        </StackPanel>
+                        <TextBlock Text="Knife"/>
+                        <ComboBox
+                            ItemsSource="{Binding Knifes}"
+                            SelectedItem="{Binding SelectedKnife}"/>
+                    </WrapPanel>
+                    <TextBlock
+                        DockPanel.Dock="Bottom"
+                        Margin="10"
+                        Text="{Binding Msg}"/>
+                    <DataGrid
+                        ItemsSource="{Binding Strips}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                Header="Size"/>
+                            <DataGridTextColumn
+                                Header="Count"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
             </TabItem>
             <TabItem Header="Settings">
                 <DockPanel>
@@ -42,7 +82,6 @@
                         Command="{Binding Command}"
                         Width="150"
                         Height="30"/>
-                    <DataGrid ItemsSource="{Binding Strips}"/>
                     
                 </DockPanel>
             </TabItem>

@@ -30,42 +30,18 @@ namespace UI.ViewModels.Realization
                 OnPropertyChanged();
             }
         }
-        public ObservableCollection<string> MyList { get; set; } = new ObservableCollection<string>
-        {
-            "asdf",
-            "asdfasdff",
-            "123rwqerf"
-        };
-        private int _Id = 90;
-        public int Id
-        {
-            get => _Id;
-            set
-            {
-                if (_Id == value)
-                    return;
-                _Id = value;
-                OnPropertyChanged();
-            }
-        }
 
         private RelayCommand _Command;
         /// <summary>команда</summary>
-        public RelayCommand Command
-        {
-            get
-            {
-                return _Command ??
+        public RelayCommand Command => _Command ??
                     (_Command = new RelayCommand(obj =>
                     {
                         string result = "";
-                        foreach(Strip strip in Strips)
+                        foreach (Strip strip in Strips)
                         {
                             result += strip.Size + "==" + strip.Count + "\n";
                         }
                         dialogServices.ShowMsg(result);
                     }));
-            }
-        }
     }
 }
