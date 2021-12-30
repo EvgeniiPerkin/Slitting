@@ -5,10 +5,15 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:UI"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:convs="clr-namespace:UI.Converters"
     Title="Calculate stlitting machine"
     Width="800"
     Height="450"
     mc:Ignorable="d">
+    <Window.Resources>
+        <convs:ConverterRadioButton x:Key="RBConv"/>
+    </Window.Resources>
+
     <DockPanel>
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem>
@@ -47,11 +52,11 @@
                             <RadioButton
                                 Content="1"
                                 Margin="5"
-                                IsChecked="{Binding CuttingMachine}"/>
+                                IsChecked="{Binding CuttingMachine, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RBConv}, ConverterParameter=1}" FontWeight="Normal"/>
                             <RadioButton
                                 Content="2"
                                 Margin="5"
-                                IsChecked="{Binding CuttingMachine}"/>
+                                IsChecked="{Binding CuttingMachine, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RBConv}, ConverterParameter=2}" FontWeight="Normal"/>
                         </StackPanel>
                         <TextBlock Text="Knife"/>
                         <ComboBox
@@ -67,8 +72,10 @@
                         ItemsSource="{Binding Strips}">
                         <DataGrid.Columns>
                             <DataGridTextColumn
+                                Binding="{Binding Path=Size, UpdateSourceTrigger=PropertyChanged}"
                                 Header="Size"/>
                             <DataGridTextColumn
+                                Binding="{Binding Path=Count, UpdateSourceTrigger=PropertyChanged}"
                                 Header="Count"/>
                         </DataGrid.Columns>
                     </DataGrid>

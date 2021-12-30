@@ -1,5 +1,4 @@
-﻿using MathCore.ViewModels;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using UI.Base;
 using UI.Commands;
 using UI.Services;
@@ -7,42 +6,31 @@ using UI.ViewModels.Interfaces;
 
 namespace UI.ViewModels.Realization
 {
-    public class MainViewModel : ViewModel, IMainViewModel
+    public class MainViewModel : ParametsViewModel, IMainViewModel
     {
-        public MainViewModel(IDialogServices dialogServices)
+        public MainViewModel(IDialogServices dialogServices, ISerializer serializer)
         {
             this.dialogServices = dialogServices;
-            _Strips = new ObservableCollection<Strip>();
+            this.serializer = serializer;
+            ParametsViewModel param = serializer.DeSerialize();
+
+            SelectedKnife = param.SelectedKnife;
+            Strips = param.Strips;
+            CuttingMachine = param.CuttingMachine;
+            Msg = param.Msg;
+            RollWidth = param.RollWidth;
+            Thickness = param.Thickness;
             _Knifes = new ObservableCollection<Knife>();
         }
         #region fields
+        private readonly ISerializer serializer;
         private readonly IDialogServices dialogServices;
-        private ObservableCollection<Strip> _Strips;
         private ObservableCollection<Knife> _Knifes;
-        private Knife _SelectedKnife;
-        private double _RollWidth;
-        private double _Thickness;
-        private int _CuttingMachine;
         private double _Progress;
         private string _Notify;
-        private string _Msg;
         #endregion
 
         #region properties
-        /// <summary>list strips</summary>
-        public ObservableCollection<Strip> Strips
-        {
-            get => _Strips;
-            set
-            {
-                if (_Strips == value)
-                {
-                    return;
-                }
-                _Strips = value;
-                OnPropertyChanged();
-            }
-        }
         /// <summary>list knifes</summary>
         public ObservableCollection<Knife> Knifes
         {
@@ -54,62 +42,6 @@ namespace UI.ViewModels.Realization
                     return;
                 }
                 _Knifes = value;
-                OnPropertyChanged();
-            }
-        }
-        /// <summary>selected knife</summary>
-        public Knife SelectedKnife
-        {
-            get => _SelectedKnife;
-            set
-            {
-                if (_SelectedKnife == value)
-                {
-                    return;
-                }
-                _SelectedKnife = value;
-                OnPropertyChanged();
-            }
-        }
-        /// <summary>Roll width</summary>
-        public double RollWidth
-        {
-            get => _RollWidth;
-            set
-            {
-                if (_RollWidth == value)
-                {
-                    return;
-                }
-                _RollWidth = value;
-                OnPropertyChanged();
-            }
-        }
-        /// <summary>Thickness metal</summary>
-        public double Thickness
-        {
-            get => _Thickness;
-            set
-            {
-                if (_Thickness == value)
-                {
-                    return;
-                }
-                _Thickness = value;
-                OnPropertyChanged();
-            }
-        }
-        /// <summary>unoccupied сutting machine</summary>
-        public int CuttingMachine
-        {
-            get => _CuttingMachine;
-            set
-            {
-                if (_CuttingMachine == value)
-                {
-                    return;
-                }
-                _CuttingMachine = value;
                 OnPropertyChanged();
             }
         }
@@ -141,20 +73,6 @@ namespace UI.ViewModels.Realization
                 OnPropertyChanged();
             }
         }
-        /// <summary>help message about the current change</summary>
-        public string Msg
-        {
-            get => _Msg;
-            set
-            {
-                if (string.Compare(_Msg, value) == 0)
-                {
-                    return;
-                }
-                _Msg = value;
-                OnPropertyChanged();
-            }
-        }
         #endregion
 
         #region commands
@@ -163,12 +81,16 @@ namespace UI.ViewModels.Realization
         public RelayCommand Command => _Command ??
                     (_Command = new RelayCommand(obj =>
                     {
-                        string result = "";
-                        foreach (Strip strip in Strips)
+                        serializer.Serialize(new ParametsViewModel
                         {
-                            result += strip.Size + "==" + strip.Count + "\n";
-                        }
-                        dialogServices.ShowMsg(result);
+                            SelectedKnife = SelectedKnife,
+                            Strips = Strips,
+                            CuttingMachine = CuttingMachine,
+                            Msg = Msg,
+                            RollWidth = RollWidth,
+                            Thickness = Thickness
+                        });
+                        dialogServices.ShowMsg("ok");
                     }));
 
         #endregion
