@@ -63,6 +63,7 @@
                         Margin="10"
                         Text="{Binding Msg}"/>
                     <DataGrid
+                        AutoGenerateColumns="False"                        
                         ItemsSource="{Binding Strips}">
                         <DataGrid.Columns>
                             <DataGridTextColumn
