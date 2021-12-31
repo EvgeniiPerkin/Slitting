@@ -115,9 +115,13 @@ namespace UI.ViewModels.Realization
         {
             try
             {
-                double sum = Strips.Sum(i => i.Size);
+                float sum = 0f;
+                foreach (Strip strip in Strips)
+                {
+                    sum += strip.Count * strip.Size;
+                }
                 int count = Strips.Sum(i => i.Count);
-                Msg = $"Total length of the tapes - { sum.ToString("C") }\nTotal number of tapes - { count }";
+                Msg = $"Total length of the tapes - { $"{sum,12:N3}" }\nTotal number of tapes - { count }";
             }
             catch
             {
