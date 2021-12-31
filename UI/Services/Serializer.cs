@@ -1,28 +1,31 @@
 ﻿using System.IO;
-using System.Xml.Serialization;
+using System.Text.Json;
+using System.Threading.Tasks;
 using UI.ViewModels.Realization;
 
 namespace UI.Services
 {
     public class Serializer : ISerializer
     {
-        public Serializer()
+        public async Task<ParametsViewModel> DeSerialize()
         {
-            formatter = new XmlSerializer(typeof(ParametsViewModel));
-        }
-        private XmlSerializer formatter;
-        public ParametsViewModel DeSerialize()
-        {
-            using (FileStream fs = new FileStream("Paramets.xml", FileMode.OpenOrCreate))
+            try
             {
-                return (ParametsViewModel)formatter.Deserialize(fs);
+                using (FileStream fs = new FileStream("Paramets.json", FileMode.OpenOrCreate))
+                {
+                    return await JsonSerializer.DeserializeAsync<ParametsViewModel>(fs);
+                }
+            }
+            catch
+            {
+                return new ParametsViewModel();
             }
         }
-        public void Serialize(ParametsViewModel paramets)
+        public async Task Serialize(ParametsViewModel paramets)
         {
-            using (FileStream fs = new FileStream("Paramets.xml", FileMode.OpenOrCreate))
+            using (FileStream fs = new FileStream("Paramets.json", FileMode.OpenOrCreate))
             {
-                formatter.Serialize(fs, paramets);
+                await JsonSerializer.SerializeAsync<ParametsViewModel>(fs, paramets);
             }
         }
     }

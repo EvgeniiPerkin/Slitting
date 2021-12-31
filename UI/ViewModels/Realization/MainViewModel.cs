@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using UI.Base;
 using UI.Commands;
 using UI.Services;
@@ -12,15 +13,7 @@ namespace UI.ViewModels.Realization
         {
             this.dialogServices = dialogServices;
             this.serializer = serializer;
-            ParametsViewModel param = serializer.DeSerialize();
-
-            SelectedKnife = param.SelectedKnife;
-            Strips = param.Strips;
-            CuttingMachine = param.CuttingMachine;
-            Msg = param.Msg;
-            RollWidth = param.RollWidth;
-            Thickness = param.Thickness;
-            _Knifes = new ObservableCollection<Knife>();
+            _ = Startup();
         }
         #region fields
         private readonly ISerializer serializer;
@@ -75,13 +68,26 @@ namespace UI.ViewModels.Realization
         }
         #endregion
 
+        public async Task Startup()
+        {
+            ParametsViewModel param = await serializer.DeSerialize().ConfigureAwait(false);
+
+            SelectedKnife = param.SelectedKnife;
+            Strips = param.Strips;
+            CuttingMachine = param.CuttingMachine;
+            Msg = param.Msg;
+            RollWidth = param.RollWidth;
+            Thickness = param.Thickness;
+            _Knifes = new ObservableCollection<Knife>();
+        }
+
         #region commands
         private RelayCommand _Command;
         /// <summary>команда</summary>
         public RelayCommand Command => _Command ??
-                    (_Command = new RelayCommand(obj =>
+                    (_Command = new RelayCommand(async obj =>
                     {
-                        serializer.Serialize(new ParametsViewModel
+                        await serializer.Serialize(new ParametsViewModel
                         {
                             SelectedKnife = SelectedKnife,
                             Strips = Strips,

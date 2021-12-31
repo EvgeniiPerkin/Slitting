@@ -1,11 +1,12 @@
 ﻿using MathCore.ViewModels;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using UI.Base;
 
 namespace UI.ViewModels.Realization
 {
-    [Serializable]
+    [Serializable()]
     public class ParametsViewModel : ViewModel
     {
         public ParametsViewModel()
@@ -31,6 +32,7 @@ namespace UI.ViewModels.Realization
                     return;
                 }
                 _Strips = value;
+                Calculace();
                 OnPropertyChanged();
             }
         }
@@ -45,6 +47,7 @@ namespace UI.ViewModels.Realization
                     return;
                 }
                 _SelectedKnife = value;
+                Calculace();
                 OnPropertyChanged();
             }
         }
@@ -59,6 +62,7 @@ namespace UI.ViewModels.Realization
                     return;
                 }
                 _RollWidth = value;
+                Calculace();
                 OnPropertyChanged();
             }
         }
@@ -73,6 +77,7 @@ namespace UI.ViewModels.Realization
                     return;
                 }
                 _Thickness = value;
+                Calculace();
                 OnPropertyChanged();
             }
         }
@@ -87,6 +92,7 @@ namespace UI.ViewModels.Realization
                     return;
                 }
                 _CuttingMachine = value;
+                Calculace();
                 OnPropertyChanged();
             }
         }
@@ -102,6 +108,20 @@ namespace UI.ViewModels.Realization
                 }
                 _Msg = value;
                 OnPropertyChanged();
+            }
+        }
+
+        public void Calculace()
+        {
+            try
+            {
+                double sum = Strips.Sum(i => i.Size);
+                int count = Strips.Sum(i => i.Count);
+                Msg = $"Total length of the tapes - { sum.ToString("C") }\nTotal number of tapes - { count }";
+            }
+            catch
+            {
+                Msg = "Error calculate";
             }
         }
     }

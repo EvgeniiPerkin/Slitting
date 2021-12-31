@@ -1,10 +1,11 @@
-﻿using UI.ViewModels.Realization;
+﻿using System.Threading.Tasks;
+using UI.ViewModels.Realization;
 
 namespace UI.Services
 {
     public interface ISerializer : IServices
     {
-        void Serialize(ParametsViewModel paramets);
-        ParametsViewModel DeSerialize();
+        Task Serialize(ParametsViewModel paramets);
+        Task<ParametsViewModel> DeSerialize();
     }
 }
