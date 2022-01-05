@@ -109,7 +109,7 @@ namespace UI.ViewModels.Realization
         public void ExecuteRemoveStrip(object parameter)
         {
             Strip strip = (Strip)parameter;
-
+            Strips.Remove(strip);
         }
         /// <summary>до выполнения команды проверяет на null параметр</summary>
         /// <param name="parameter">параметр команды</param>

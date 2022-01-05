@@ -1,19 +1,22 @@
 ﻿using MathCore.ViewModels;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using UI.Base;
+using UI.ViewModels.Realization.Validators;
 
 namespace UI.ViewModels.Realization
 {
     [Serializable()]
-    public class ParametsViewModel : ViewModel
+    public class ParametsViewModel : ViewModel, IDataErrorInfo
     {
         public ParametsViewModel()
         {
             _Strips = new ObservableCollection<Strip>();
         }
 
+        private readonly ParametrsValidator validator = new ParametrsValidator();
         private ObservableCollection<Strip> _Strips;
         private Strip _SelectedStrip;
         private Knife _SelectedKnife;
@@ -127,6 +130,7 @@ namespace UI.ViewModels.Realization
             }
         }
 
+        #region methods
         public void Calculace()
         {
             try
@@ -144,5 +148,33 @@ namespace UI.ViewModels.Realization
                 Msg = "Error calculate";
             }
         }
+        public string this[string columnName]
+        {
+            get
+            {
+                var firstOrDefault = validator.Validate(this).Errors.FirstOrDefault(lol => lol.PropertyName == columnName);
+                if (firstOrDefault != null)
+                    return validator != null ? firstOrDefault.ErrorMessage : "";
+                return "";
+            }
+        }
+        public string Error
+        {
+            get
+            {
+                if (validator != null)
+                {
+                    var results = validator.Validate(this);
+                    if (results != null && results.Errors.Any())
+                    {
+                        var errors = string.Join(Environment.NewLine, results.Errors.Select(x => x.ErrorMessage).ToArray());
+                        return errors;
+                    }
+                }
+                return string.Empty;
+            }
+        }
+
+        #endregion
     }
 }

@@ -5,15 +5,32 @@
     xmlns:convs="clr-namespace:UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:UI"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:realization="clr-namespace:UI.ViewModels.Realization" 
+    d:DataContext="{d:DesignInstance Type=realization:MainViewModel}"
     Title="Calculate stlitting machine"
     Width="800"
     Height="450"
     mc:Ignorable="d">
     <Window.Resources>
+        <ControlTemplate x:Key="ErrorTemplate">
+            <DockPanel LastChildFill="True">
+                <Border BorderBrush="Red" BorderThickness="1">
+                    <AdornedElementPlaceholder />
+                </Border>
+            </DockPanel>
+        </ControlTemplate>
+        <Style TargetType="TextBox">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip"
+                            Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                        Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
         <convs:ConverterRadioButton x:Key="RBConv" />
     </Window.Resources>
-
     <DockPanel>
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem>
@@ -38,9 +55,13 @@
                         DockPanel.Dock="Left"
                         Orientation="Vertical">
                         <TextBlock Text="Roll width" />
-                        <TextBox Margin="0,0,0,5" Text="{Binding RollWidth}" />
+                        <TextBox
+                            Margin="0,0,0,5"
+                            Text="{Binding RollWidth, ValidatesOnDataErrors=True, NotifyOnValidationError=True, ValidatesOnExceptions=True}" />
                         <TextBlock Text="Material thickness" />
-                        <TextBox Margin="0,0,0,5" Text="{Binding Thickness}" />
+                        <TextBox
+                            Margin="0,0,0,5"
+                            Text="{Binding Thickness, ValidatesOnDataErrors=True, NotifyOnValidationError=True, ValidatesOnExceptions=True}" />
                         <TextBlock Text="Cutting machine" />
                         <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                             <RadioButton
@@ -78,7 +99,8 @@
                     </StackPanel>
                     <DataGrid
                         CanUserAddRows="False"
-                        ItemsSource="{Binding Strips}"/>
+                        ItemsSource="{Binding Strips}"
+                        SelectedItem="{Binding SelectedStrip}"/>
                 </DockPanel>
             </TabItem>
             <TabItem Header="Settings">
@@ -90,7 +112,6 @@
                         Command="{Binding Command}"
                         Content="Show"
                         DockPanel.Dock="Top" />
-
                 </DockPanel>
             </TabItem>
         </TabControl>
