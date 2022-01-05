@@ -80,7 +80,12 @@ namespace UI.ViewModels.Realization
             Msg = param.Msg;
             RollWidth = param.RollWidth;
             Thickness = param.Thickness;
-            _Knifes = new ObservableCollection<Knife>();
+            _Knifes = new ObservableCollection<Knife>
+            {
+                new Knife { Size = 9 },
+                new Knife { Size = 15 },
+                new Knife { Size = 10 }
+            };
         }
 
         #region commands

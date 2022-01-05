@@ -75,7 +75,9 @@
                                 IsChecked="{Binding CuttingMachine, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RBConv}, ConverterParameter=2}" />
                         </StackPanel>
                         <TextBlock Text="Knife" />
-                        <ComboBox ItemsSource="{Binding Knifes}" SelectedItem="{Binding SelectedKnife}" />
+                        <ComboBox
+                            ItemsSource="{Binding Knifes}"
+                            SelectedItem="{Binding SelectedKnife}"/>
                     </WrapPanel>
                     <TextBlock
                         Margin="10"
