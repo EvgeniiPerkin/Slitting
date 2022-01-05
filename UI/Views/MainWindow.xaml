@@ -61,7 +61,24 @@
                         Margin="10"
                         DockPanel.Dock="Bottom"
                         Text="{Binding Msg}" />
-                    <DataGrid ItemsSource="{Binding Strips}" />
+                    <StackPanel
+                        DockPanel.Dock="Bottom"
+                        Orientation="Horizontal">
+                        <Button
+                            Content="Add"
+                            Command="{Binding AddNewStripCommand}"
+                            Width="50"
+                            Margin="8"/>
+                        <Button
+                            Content="Remove"
+                            Command="{Binding RemoveStripCommand}"
+                            CommandParameter="{Binding SelectedStrip}"
+                            Width="50"
+                            Margin="8"/>
+                    </StackPanel>
+                    <DataGrid
+                        CanUserAddRows="False"
+                        ItemsSource="{Binding Strips}"/>
                 </DockPanel>
             </TabItem>
             <TabItem Header="Settings">

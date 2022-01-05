@@ -15,6 +15,7 @@ namespace UI.ViewModels.Realization
         }
 
         private ObservableCollection<Strip> _Strips;
+        private Strip _SelectedStrip;
         private Knife _SelectedKnife;
         private double _RollWidth;
         private double _Thickness;
@@ -32,6 +33,21 @@ namespace UI.ViewModels.Realization
                     return;
                 }
                 _Strips = value;
+                Calculace();
+                OnPropertyChanged();
+            }
+        }
+        /// <summary>selected strip</summary>
+        public Strip SelectedStrip
+        {
+            get => _SelectedStrip;
+            set
+            {
+                if (_SelectedStrip == value)
+                {
+                    return;
+                }
+                _SelectedStrip = value;
                 Calculace();
                 OnPropertyChanged();
             }

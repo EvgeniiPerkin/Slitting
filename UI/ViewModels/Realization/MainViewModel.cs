@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using UI.Base;
 using UI.Commands;
 using UI.Services;
@@ -82,6 +83,41 @@ namespace UI.ViewModels.Realization
         }
 
         #region commands
+        private RelayCommand _AddNewStripCommand;
+        /// <summary>create new item strip</summary>
+        public RelayCommand AddNewStripCommand => _AddNewStripCommand ??
+                    (_AddNewStripCommand = new RelayCommand(obj =>
+                    {
+                        Strips.Add(new Strip { Count = 0, Size = 0f });
+                    }));
+
+        private RelayCommand _RemoveStripCommand;
+        /// <summary>команда</summary>
+        public ICommand RemoveStripCommand
+        {
+            get
+            {
+                if (_RemoveStripCommand == null)
+                {
+                    _RemoveStripCommand = new RelayCommand(ExecuteRemoveStrip, CanExecuteRemoveStrip);
+                }
+                return _RemoveStripCommand;
+            }
+        }
+        /// <summary>выполненеие команды</summary>
+        /// <param name="parameter"></param>
+        public void ExecuteRemoveStrip(object parameter)
+        {
+            Strip strip = (Strip)parameter;
+
+        }
+        /// <summary>до выполнения команды проверяет на null параметр</summary>
+        /// <param name="parameter">параметр команды</param>
+        /// <returns></returns>
+        public bool CanExecuteRemoveStrip(object parameter)
+        {
+            return parameter != null;
+        }
         private RelayCommand _Command;
         /// <summary>команда</summary>
         public RelayCommand Command => _Command ??
