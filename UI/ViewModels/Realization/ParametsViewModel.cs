@@ -1,4 +1,5 @@
-﻿using MathCore.ViewModels;
+﻿using FluentValidation.Results;
+using MathCore.ViewModels;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -16,6 +17,7 @@ namespace UI.ViewModels.Realization
             _Strips = new ObservableCollection<Strip>();
         }
 
+        #region fields
         private readonly ParametrsValidator validator = new ParametrsValidator();
         private ObservableCollection<Strip> _Strips;
         private Strip _SelectedStrip;
@@ -24,7 +26,9 @@ namespace UI.ViewModels.Realization
         private double _Thickness;
         private int _CuttingMachine;
         private string _Msg;
+        #endregion
 
+        #region properties
         /// <summary>list strips</summary>
         public ObservableCollection<Strip> Strips
         {
@@ -129,25 +133,6 @@ namespace UI.ViewModels.Realization
                 OnPropertyChanged();
             }
         }
-
-        #region methods
-        public void Calculace()
-        {
-            try
-            {
-                float sum = 0f;
-                foreach (Strip strip in Strips)
-                {
-                    sum += strip.Count * strip.Size;
-                }
-                int count = Strips.Sum(i => i.Count);
-                Msg = $"Total length of the tapes - { $"{sum,12:N3}" }\nTotal number of tapes - { count }";
-            }
-            catch
-            {
-                Msg = "Error calculate";
-            }
-        }
         public string this[string columnName]
         {
             get
@@ -174,7 +159,31 @@ namespace UI.ViewModels.Realization
                 return string.Empty;
             }
         }
+        #endregion
 
+        #region methods
+        public void Calculace()
+        {
+            try
+            {
+                float sum = 0f;
+                foreach (Strip strip in Strips)
+                {
+                    sum += strip.Count * strip.Size;
+                }
+                int count = Strips.Sum(i => i.Count);
+                Msg = $"Total length of the tapes - { $"{sum,12:N3}" }\nTotal number of tapes - { count }";
+            }
+            catch
+            {
+                Msg = "Error calculate";
+            }
+        }
+        public bool IsValid()
+        {
+            ValidationResult results = validator.Validate(this);
+            return results.IsValid;
+        }
         #endregion
     }
 }

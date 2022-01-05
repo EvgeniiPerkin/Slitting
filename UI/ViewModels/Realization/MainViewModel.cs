@@ -16,6 +16,7 @@ namespace UI.ViewModels.Realization
             this.serializer = serializer;
             _ = Startup();
         }
+
         #region fields
         private readonly ISerializer serializer;
         private readonly IDialogServices dialogServices;
@@ -118,6 +119,35 @@ namespace UI.ViewModels.Realization
         {
             return parameter != null;
         }
+
+
+        private RelayCommand _CalculateCommand;
+        /// <summary>команда</summary>
+        public ICommand CalculateCommand
+        {
+            get
+            {
+                if (_CalculateCommand == null)
+                {
+                    _CalculateCommand = new RelayCommand(ExecuteCalculate, CanExecuteCalculate);
+                }
+                return _CalculateCommand;
+            }
+        }
+        /// <summary>выполненеие команды</summary>
+        /// <param name="parameter"></param>
+        public void ExecuteCalculate(object parameter)
+        {
+            //TO DO
+        }
+        /// <summary>до выполнения команды проверяет на null параметр</summary>
+        /// <param name="parameter">параметр команды</param>
+        /// <returns></returns>
+        public bool CanExecuteCalculate(object parameter)
+        {
+            return this.IsValid();
+        }
+
         private RelayCommand _Command;
         /// <summary>команда</summary>
         public RelayCommand Command => _Command ??

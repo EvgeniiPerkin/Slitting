@@ -88,13 +88,18 @@
                         <Button
                             Content="Add"
                             Command="{Binding AddNewStripCommand}"
-                            Width="50"
+                            Width="70"
                             Margin="8"/>
                         <Button
                             Content="Remove"
                             Command="{Binding RemoveStripCommand}"
                             CommandParameter="{Binding SelectedStrip}"
-                            Width="50"
+                            Width="70"
+                            Margin="8"/>
+                        <Button
+                            Content="Calculate"
+                            Command="{Binding CalculateCommand}"
+                            Width="70"
                             Margin="8"/>
                     </StackPanel>
                     <DataGrid
